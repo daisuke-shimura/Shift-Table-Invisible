@@ -2,6 +2,13 @@
 
 <h3>新規日程作成</h3>
 <%= form_with model: @week, url: admin_weeks_path, method: :post do |f| %>
+  <% if @week.errors.any? %>
+  <ul>
+    <% @week.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+  <% end %>
   <div class="field">
     <%= f.label :monday, "開始日" %>
     <%= f.date_field :monday %>
@@ -14,6 +21,6 @@
 <h3>日程一覧</h3>
 <% @weeks.each do |week| %>
   <%= link_to admin_week_jobs_path(week_id: week.id) do %>
-    <%= week.month %>月<%= (week.monday).day %>日～<%= week.month %>月<%= (week.sunday).day %>日<br>
+    <%= (week.monday).month %>月<%= (week.monday).day %>日～<%= (week.sunday).month %>月<%= (week.sunday).day %>日<br>
   <% end %>
 <% end %>

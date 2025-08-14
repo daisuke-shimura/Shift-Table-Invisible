@@ -1,7 +1,12 @@
 class Week < ApplicationRecord
+  validate :monday_validate
+  validates :monday, presence: true
 
-  def month
-    monday.month
+  def monday_validate
+    return if monday.blank?
+    unless monday.monday?
+      errors.add(:monday, 'must be a Monday')
+    end
   end
 
   def sunday

@@ -15,17 +15,21 @@
       <th class="<%= holiday_class(@week.friday) %>"><%= (@week.friday).month %>/<%= (@week.friday).day %></th>
       <th class="<%= holiday_class(@week.saturday) || 'text-primary' %>"><%= (@week.saturday).month %>/<%= (@week.saturday).day %></th>
       <th class="text-danger"><%= (@week.sunday).month %>/<%= (@week.sunday).day %></th>
+      <th></th>
+      <th>備考</th>
     </tr>
-    <tr>
+    <tr class="table-secondary">
       <th></th>
       <th></th>
       <th class="<%= holiday_class(@week.monday) %>">月</th>
-      <th class="<%= holiday_class(@week.tuesday) %>">火</th>
-      <th class="<%= holiday_class(@week.wednesday) %>">水</th>
-      <th class="<%= holiday_class(@week.thursday) %>">木</th>
-      <th class="<%= holiday_class(@week.friday) %>">金</th>
-      <th class="<%= holiday_class(@week.saturday) || 'text-primary' %>">土</th>
-      <th class="text-danger">日</th>
+      <th class="<%= holiday_class(@week.tuesday) %> fw-bold">火</th>
+      <th class="<%= holiday_class(@week.wednesday) %> fw-bold">水</th>
+      <th class="<%= holiday_class(@week.thursday) %> fw-bold">木</th>
+      <th class="<%= holiday_class(@week.friday) %> fw-bold">金</th>
+      <th class="<%= holiday_class(@week.saturday) || 'text-primary' %> fw-bold">土</th>
+      <th class="text-danger fw-bold">日</th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -34,6 +38,8 @@
     <tr class="">
       <td><%= user.id %></td>
       <td><%= user.name %></td>
+      <td></td>
+      <td></td>
       <td></td>
       <td></td>
       <td></td>
