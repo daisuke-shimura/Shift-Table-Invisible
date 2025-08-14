@@ -14,6 +14,6 @@
 <h3>日程一覧</h3>
 <% @weeks.each do |week| %>
   <%= link_to admin_week_jobs_path(week_id: week.id) do %>
-    <%= week.month %>月<%= (week.monday).day %>日～<%= week.month %>月<%= week.sunday %>日<br>
+    <%= week.month %>月<%= (week.monday).day %>日～<%= week.month %>月<%= (week.sunday).day %>日<br>
   <% end %>
 <% end %>

@@ -1,20 +1,31 @@
 <%= link_to "戻る", admin_weeks_path %>
 
 <h1>admin Index</h1>
-<h3><%= (@week.monday).day %>日～<%= @week.sunday %>日のシフト希望</h3>
+<h3><%= (@week.monday).day %>日～<%= (@week.sunday).day %>日のシフト希望</h3>
 
 <table class="table table-bordered table-hover">
   <thead>
     <tr class="table-secondary">
       <th></th>
       <th></th>
-      <th><%= (@week.monday).month %>/<%= (@week.monday).day %></th>
-      <th><%= (@week.tuesday).month %>/<%= (@week.tuesday).day %></th>
-      <th><%= (@week.wednesday).month %>/<%= (@week.wednesday).day %></th>
-      <th><%= (@week.thursday).month %>/<%= (@week.thursday).day %></th>
-      <th><%= (@week.friday).month %>/<%= (@week.friday).day %></th>
-      <th><%= (@week.saturday).month %>/<%= (@week.saturday).day %></th>
-      <th><%= (@week.sunday).month %>/<%= (@week.sunday).day %></th>
+      <th class="<%= holiday_class(@week.monday) %>"><%= (@week.monday).month %>/<%= (@week.monday).day %></th>
+      <th class="<%= holiday_class(@week.tuesday) %>"><%= (@week.tuesday).month %>/<%= (@week.tuesday).day %></th>
+      <th class="<%= holiday_class(@week.wednesday) %>"><%= (@week.wednesday).month %>/<%= (@week.wednesday).day %></th>
+      <th class="<%= holiday_class(@week.thursday) %>"><%= (@week.thursday).month %>/<%= (@week.thursday).day %></th>
+      <th class="<%= holiday_class(@week.friday) %>"><%= (@week.friday).month %>/<%= (@week.friday).day %></th>
+      <th class="<%= holiday_class(@week.saturday) || 'text-primary' %>"><%= (@week.saturday).month %>/<%= (@week.saturday).day %></th>
+      <th class="text-danger"><%= (@week.sunday).month %>/<%= (@week.sunday).day %></th>
+    </tr>
+    <tr>
+      <th></th>
+      <th></th>
+      <th class="<%= holiday_class(@week.monday) %>">月</th>
+      <th class="<%= holiday_class(@week.tuesday) %>">火</th>
+      <th class="<%= holiday_class(@week.wednesday) %>">水</th>
+      <th class="<%= holiday_class(@week.thursday) %>">木</th>
+      <th class="<%= holiday_class(@week.friday) %>">金</th>
+      <th class="<%= holiday_class(@week.saturday) || 'text-primary' %>">土</th>
+      <th class="text-danger">日</th>
     </tr>
   </thead>
 
