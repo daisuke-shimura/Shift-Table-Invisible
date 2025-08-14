@@ -21,6 +21,8 @@
 <h3>日程一覧</h3>
 <% @weeks.each do |week| %>
   <%= link_to admin_week_jobs_path(week_id: week.id) do %>
-    <%= (week.monday).month %>月<%= (week.monday).day %>日～<%= (week.sunday).month %>月<%= (week.sunday).day %>日<br>
+    <%= (week.monday).month %>月<%= (week.monday).day %>日～<%= (week.sunday).month %>月<%= (week.sunday).day %>日
   <% end %>
+  <%= link_to "削除", admin_week_path(week.id), method: :delete, class:"btn btn-danger btn-sm" %>
+  <br>
 <% end %>

@@ -14,6 +14,15 @@ class Admin::WeeksController < ApplicationController
     end
   end
 
+  def destroy
+    @week = Week.find(params[:id])
+    if @week.destroy
+      redirect_to admin_weeks_path, notice: 'Week was successfully deleted.'
+    else
+      redirect_to admin_weeks_path, alert: 'Failed to delete week.'
+    end
+  end
+
   private
   def week_params
     params.require(:week).permit(:monday)
