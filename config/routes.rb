@@ -13,13 +13,17 @@ Rails.application.routes.draw do
 
 
   namespace :admin do
-    resources :weeks
+    resources :weeks do
+      resources :jobs, only: [:index]
+    end
   end
 
   scope module: :public do
-    resources :weeks
+    resources :weeks do
+      resources :jobs, only: [:index]
+    end
     resources :users
-    resources :shifts
+    #resources :shifts
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
