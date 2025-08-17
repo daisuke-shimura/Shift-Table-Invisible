@@ -2,6 +2,18 @@ class Admin::WeeksController < ApplicationController
   def index
     @week = Week.new
     @weeks = Week.all
+
+    #カレンダー
+    today = Date.today
+    start_date = today.beginning_of_month
+    end_date = today.end_of_month
+    # 月曜始まりに揃える
+    start_date -= (start_date.wday - 1) % 7
+
+    # 日曜終わりに揃える
+    end_date += (7 - end_date.wday) % 7
+
+    @days = (start_date..end_date).to_a
   end
 
   def create
