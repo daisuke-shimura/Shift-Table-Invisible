@@ -1,1 +1,64 @@
 @import "bootstrap";
+
+/*カレンダー*/
+.calendar-grid {
+  background-color: #ddd;  /*グリッド全体の背景色 */
+}
+
+.calendar-grid.header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7列（横並び） */
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.calendar-grid.body {
+}
+
+.week-link {
+  display: block;      /*リンクを1行全体にする */
+  margin-bottom: 2px;  /* 週ごとに余白 */
+  text-decoration: none;
+  color: inherit;
+}
+
+.week-link:hover .week-row{
+  background-color: #0088ff; /* ホバー時の背景色 */
+}
+
+.week-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7日を横並び */
+  background-color: white; /* 週の背景色 */
+}
+
+
+.date {
+  /*background-color: #fff;  各日付セルの背景色 */
+  text-align: left;
+  height: 100px; /* セルの高さ */
+  vertical-align: top; /* 上部に揃える */
+  padding: 10px;
+  border: 1px solid #ddd; /* セルの境界線 */
+  box-sizing: border-box;
+  position: relative;
+}
+
+
+/* 土曜日 */
+.date:nth-child(6) {
+  color: blue;
+}
+
+/* 日曜日 */
+.date:nth-child(7) {
+  color: red;
+}
+
+/* 今日の日付 */
+.date.today {
+  background-color: #ffeb3b;
+  font-weight: bold;
+  border: 2px solid #fbc02d;
+}
