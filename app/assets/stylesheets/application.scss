@@ -7,7 +7,7 @@
 
 .calendar-grid.header {
   display: grid;
-  grid-template-columns: repeat(7, 1fr); /* 7列（横並び） */
+  grid-template-columns: repeat(7, minmax(0, 1fr)) 72px; /* 7列（横並び） */
   font-weight: bold;
   text-align: center;
   margin-bottom: 4px;
@@ -16,21 +16,23 @@
 .calendar-grid.body {
 }
 
+.week-row {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) 72px; /* 7日を横並び */
+  background-color: white; /* 週の背景色 */
+}
+
+
 .week-link {
-  display: block;      /*リンクを1行全体にする */
-  margin-bottom: 2px;  /* 週ごとに余白 */
-  text-decoration: none;
+  /*display: block;      リンクを1行全体にする 
+  margin-bottom: 2px;   週ごとに余白 
+  text-decoration: none;*/
+  display: contents;
   color: inherit;
 }
 
-.week-link:hover .week-row{
-  background-color: #0088ff; /* ホバー時の背景色 */
-}
-
-.week-row {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr); /* 7日を横並び */
-  background-color: white; /* 週の背景色 */
+.week-link:hover .date {
+  background-color: #eef6ff;
 }
 
 
@@ -43,6 +45,19 @@
   border: 1px solid #ddd; /* セルの境界線 */
   box-sizing: border-box;
   position: relative;
+}
+
+.note-head { 
+  text-align: left; 
+  font-weight: 600;
+}
+
+.note { 
+  text-align: left; 
+  color: #555; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
 }
 
 
@@ -61,4 +76,8 @@
   background-color: #ffeb3b;
   font-weight: bold;
   border: 2px solid #fbc02d;
+}
+
+.week-day {
+  border-right: 1px solid #001eff;
 }

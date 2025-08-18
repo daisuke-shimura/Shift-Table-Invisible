@@ -31,25 +31,32 @@
 <h3>カレンダー（データ）</h3>
 <!-- 曜日ヘッダー -->
 <div class="calendar-grid header">
-  <div>月</div>
-  <div>火</div>
-  <div>水</div>
-  <div>木</div>
-  <div>金</div>
-  <div>土</div>
-  <div>日</div>
+  <div class="week-day">月</div>
+  <div class="week-day">火</div>
+  <div class="week-day">水</div>
+  <div class="week-day">木</div>
+  <div class="week-day">金</div>
+  <div class="week-day">土</div>
+  <div class="week-day">日</div>
+  <div class=""></div>
 </div>
 
 <!-- カレンダー本体 -->
 <div class="calendar-grid body">
   <% @weeks.each do |week| %>
-    <%= link_to admin_week_jobs_path(week_id: week.id), class:"week-link" do %>
-      <div class="week-row">
-        <% [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday].each do |day| %>
-          <div class="date"><%= week.send(day).month %>/<%= week.send(day).day %></div>
+    <div class="week-row">
+        <%= link_to admin_week_jobs_path(week_id: week.id), class:"week-link" do %>
+          
+            <% [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday].each do |day| %>
+              <div class="date"><%= week.send(day).month %>/<%= week.send(day).day %></div>
+            <% end %>
+          
         <% end %>
-        
-      </div>
-    <% end %>
+      
+    
+        <span class="">
+          <%= link_to "削除",admin_week_path(week.id), method: :delete, class:"btn btn-danger btn-sm" %>
+        </span>
+    </div>
   <% end %>
 </div>
