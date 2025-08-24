@@ -100,8 +100,10 @@
 <br>
 <%= @end_day %>
   
-<h3>カレンダー（全体）8月<%= @today %></h3>
-<div class="calendar-grid box">
+
+<%= @today %>
+<h3>カレンダー（全体）<span id="calendar-title"><%= @start_date.strftime('%-m月') %></span></h3>
+<div id="calendar-container" class="calendar-grid box">
   <div class="calendar-grid header">
     <div class="week-day">月</div>
     <div class="week-day">火</div>
@@ -118,7 +120,9 @@
         <div class="week-row">
           <%= link_to admin_week_jobs_path(week_id: week.id), class:"week-link" do %>
             <% [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday].each do |day| %>
-              <div class="date"><%= week.send(day).month %>/<%= week.send(day).day %></div>
+              <div class="date" data-month="<%= week.send(day).month %>" data-date="<%= week.send(day) %>">
+                <%= week.send(day).month %>/<%= week.send(day).day %>
+              </div>
             <% end %>
           <% end %>
           <%= link_to admin_week_path(week.id), method: :delete, class:"btn btn-danger btn-sm" do %>
@@ -128,7 +132,7 @@
         <% else %>
         <div class="week-row-2">
               <% (0..6).each do |day| %>
-                <div class="date <%= (date + day).month.odd? ? 'odd-month' : 'even-month' %> <%= 'today' if (date + day) == @today %>">
+                <div class="date <%= (date + day).month.odd? ? 'odd-month' : 'even-month' %> <%= 'today' if (date + day) == @today %>" data-month="<%= (date + day).month %>" data-date="<%= (date + day) %>">
                   <%= (date + day).month %>/<%= (date + day).day %>
                 </div>
               <% end %>
@@ -162,3 +166,57 @@
     </div>
   </div>
 <% end %>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const container = document.getElementById('calendar-container');
+  if (!container) return;
+  const header = container.querySelector('.calendar-grid.header');
+  const titleEl = document.getElementById('calendar-title');
+  if (!header || !titleEl) return;
+
+  let ticking = false;
+
+  function findDateCellAt(x, y) {
+    const el = document.elementFromPoint(x, y);
+    return el ? (el.closest ? el.closest('.date') : findAncestor(el, 'date')) : null;
+  }
+
+  function updateTitle() {
+    const rect = container.getBoundingClientRect();
+    const y = rect.top + header.offsetHeight + 2; // ヘッダー直下の y
+    // まずは右端近くをチェックし、見つからなければ左へスキャンして最初の .date を使う
+    let dateCell = null;
+    for (let offset = 10; offset <= rect.width; offset += 10) {
+      const x = rect.left + rect.width - offset;
+      dateCell = findDateCellAt(x, y);
+      if (dateCell && dateCell.dataset && dateCell.dataset.month) break;
+    }
+
+    if (dateCell && dateCell.dataset && dateCell.dataset.month) {
+      titleEl.textContent = dateCell.dataset.month + '月';
+    }
+    ticking = false;
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(updateTitle);
+    }
+  }
+
+  container.addEventListener('scroll', onScroll, { passive: true });
+  // 初回セット
+  updateTitle();
+
+  function findAncestor(node, className) {
+    while (node && node !== document) {
+      if (node.classList && node.classList.contains(className)) return node;
+      node = node.parentNode;
+    }
+    return null;
+  }
+});
+</script>

@@ -7,6 +7,14 @@
 
 .calendar-grid.box {
   border: 2px solid #000000;
+  /* 表示領域を固定して内部をスクロールさせる */
+  width: 100%;
+  max-width: 1080px; /* 必要なら調整 */
+  margin: 0 auto;
+  max-height: 80vh;          /* または height: 600px; 等 */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
 }
 
 
@@ -15,6 +23,11 @@
   grid-template-columns: repeat(7, minmax(0, 1fr)) 72px; /* 7列（横並び） */
   font-weight: bold;
   text-align: center;
+  /*スクロール用で追加*/
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff; /* ヘッダー背景を指定（必要に応じて調整） */
 }
 
 .calendar-grid.body {
@@ -78,7 +91,6 @@
 
 /* 各セルの間にだけ縦線を表示（重複しない） */
 .date + .date {
-  
 }
 
 /* 今日の日付 */
