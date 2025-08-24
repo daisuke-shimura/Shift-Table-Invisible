@@ -2,15 +2,19 @@
 
 /*カレンダー*/
 .calendar-grid {
-  background-color: #ddd;  /*グリッド全体の背景色 */
+  /*background-color: #ddd;  グリッド全体の背景色 */
 }
+
+.calendar-grid.box {
+  border: 2px solid #000000;
+}
+
 
 .calendar-grid.header {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr)) 72px; /* 7列（横並び） */
   font-weight: bold;
   text-align: center;
-  margin-bottom: 4px;
 }
 
 .calendar-grid.body {
@@ -19,7 +23,15 @@
 .week-row {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr)) 72px; /* 7日を横並び */
-  background-color: white; /* 週の背景色 */
+  background-color: #00bfff; /* 週の背景色 */
+  border-top: 2px solid #696969;
+}
+
+.week-row-2 {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) 72px; /* 7日を横並び */
+  
+  border-top: 2px solid #696969;
 }
 
 
@@ -27,12 +39,18 @@
   /*display: block;      リンクを1行全体にする 
   margin-bottom: 2px;   週ごとに余白 
   text-decoration: none;*/
+ 
   display: contents;
   color: inherit;
 }
 
 .week-link:hover .date {
-  background-color: #eef6ff;
+  /*background-color: #eef6ff;*/
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.week-link:active {
+  background-color: #f0f8ff; /* タップ時の反応 */
 }
 
 
@@ -42,9 +60,36 @@
   height: 100px; /* セルの高さ */
   vertical-align: top; /* 上部に揃える */
   padding: 10px;
-  border: 1px solid #ddd; /* セルの境界線 */
+  /* border: 1px solid #ddd; セルの境界線 */
+  border-right: 1px solid #696969;
   box-sizing: border-box;
   position: relative;
+}
+
+/* 奇数月は白にする */
+.date.odd-month {
+  background-color: #fff;
+}
+
+/* 必要なら偶数用クラス（デフォルトと同じ） */
+.date.even-month {
+  background-color: #ddd;
+}
+
+/* 各セルの間にだけ縦線を表示（重複しない） */
+.date + .date {
+  
+}
+
+/* 今日の日付 */
+.date.today {
+  background-color: #ffeb3b; /* 黄色 */
+  font-weight: 700;
+  border: 2px solid #fbc02d;
+}
+
+.date:last-child {
+  
 }
 
 .note-head { 
@@ -71,13 +116,8 @@
   color: red;
 }
 
-/* 今日の日付 */
-.date.today {
-  background-color: #ffeb3b;
-  font-weight: bold;
-  border: 2px solid #fbc02d;
-}
-
 .week-day {
-  border-right: 1px solid #001eff;
+  border-right: 1px solid #696969;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }

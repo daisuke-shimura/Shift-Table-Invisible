@@ -18,6 +18,15 @@
   </div>
 <% end %>
 
+<h3>日程一覧（all）</h3>
+<% @weeks_all.each do |week| %>
+  <%= link_to admin_week_jobs_path(week_id: week.id) do %>
+    <%= (week.monday).month %>月<%= (week.monday).day %>日～<%= (week.sunday).month %>月<%= (week.sunday).day %>日
+  <% end %>
+  <%= link_to "削除", admin_week_path(week.id), method: :delete, class:"btn btn-danger btn-sm" %>
+  <br>
+<% end %>
+
 <h3>日程一覧</h3>
 <% @weeks.each do |week| %>
   <%= link_to admin_week_jobs_path(week_id: week.id) do %>
@@ -30,43 +39,126 @@
 
 <h3>カレンダー（データ）</h3>
 <!-- 曜日ヘッダー -->
-<div class="calendar-grid header">
-  <div class="week-day">月</div>
-  <div class="week-day">火</div>
-  <div class="week-day">水</div>
-  <div class="week-day">木</div>
-  <div class="week-day">金</div>
-  <div class="week-day">土</div>
-  <div class="week-day">日</div>
-  <div class=""></div>
+<div class="calendar-grid box">
+  <div class="calendar-grid header">
+    <div class="week-day">月</div>
+    <div class="week-day">火</div>
+    <div class="week-day">水</div>
+    <div class="week-day">木</div>
+    <div class="week-day">金</div>
+    <div class="week-day text-primary">土</div>
+    <div class="week-day text-danger">日</div>
+    <div class=""></div>
+  </div>
+  <!-- カレンダー本体 -->
+  <div class="calendar-grid body">
+    <% @weeks.each do |week| %>
+      <div class="week-row">
+          <%= link_to admin_week_jobs_path(week_id: week.id), class:"week-link" do %>
+            
+              <% [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday].each do |day| %>
+                <div class="date"><%= week.send(day).month %>/<%= week.send(day).day %></div>
+              <% end %>
+
+          <% end %>
+      
+          <span class="">
+            <%= link_to admin_week_path(week.id), method: :delete, class:"btn btn-danger btn-sm" do %>
+              <span class="material-symbols-outlined">delete</span>
+            <% end %>
+          </span>
+      </div>
+    <% end %>
+  </div>
 </div>
 
-<!-- カレンダー本体 -->
-<div class="calendar-grid body">
-  <% @weeks.each do |week| %>
-    <div class="week-row">
-        <%= link_to admin_week_jobs_path(week_id: week.id), class:"week-link" do %>
-          
+
+<!-- 他の日も表示カレンダー -->
+<% @days.each do |day| %>
+  <%= day %>
+<% end %>
+<br>
+<% @weeks.each do |day| %>
+  <%= day.monday %>
+<% end %>
+<hr>
+<% @week_mondays.each do |day| %>
+  <%= day %>
+<% end %>
+<br>a
+<% @calendar_rows.each do |day, week| %>
+  <%= day %>
+  <% if week %>
+    <%= week.as_json %>
+  <% else %>
+    <span class="text-muted">データなし</span>
+  <% end %>
+  <br>
+<% end %>
+<br>
+<%= @start_day %>
+<br>
+<%= @end_day %>
+  
+<h3>カレンダー（全体）8月<%= @today %></h3>
+<div class="calendar-grid box">
+  <div class="calendar-grid header">
+    <div class="week-day">月</div>
+    <div class="week-day">火</div>
+    <div class="week-day">水</div>
+    <div class="week-day">木</div>
+    <div class="week-day">金</div>
+    <div class="week-day text-primary">土</div>
+    <div class="week-day text-danger">日</div>
+  </div>
+  <!-- カレンダー本体 -->
+  <div class="calendar-grid body">
+    <% @calendar_rows.each do |date, week| %>
+        <% if week %>
+        <div class="week-row">
+          <%= link_to admin_week_jobs_path(week_id: week.id), class:"week-link" do %>
             <% [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday].each do |day| %>
               <div class="date"><%= week.send(day).month %>/<%= week.send(day).day %></div>
             <% end %>
-          
-        <% end %>
-      
-    
-        <span class="">
+          <% end %>
           <%= link_to admin_week_path(week.id), method: :delete, class:"btn btn-danger btn-sm" do %>
             <span class="material-symbols-outlined">delete</span>
           <% end %>
-        </span>
-    </div>
-  <% end %>
+        </div>
+        <% else %>
+        <div class="week-row-2">
+              <% (0..6).each do |day| %>
+                <div class="date <%= (date + day).month.odd? ? 'odd-month' : 'even-month' %> <%= 'today' if (date + day) == @today %>">
+                  <%= (date + day).month %>/<%= (date + day).day %>
+                </div>
+              <% end %>
+              <span></span>
+        </div>
+        <% end %>
+    <% end %>
+  </div>
 </div>
 
-<!-- アウトライン -->
-<span class="material-symbols-outlined">home</span>
-<!-- 丸っこい -->
-<span class="material-symbols-rounded">home</span>
-<!-- シャープ -->
-<span class="material-symbols-sharp">home</span>
-<span class="material-icons">home</>                <!-- 塗りつぶし -->
+
+<h3>わんちゃん楽？</h3>
+  <div class="calendar-grid header">
+    <div class="week-day">月</div>
+    <div class="week-day">火</div>
+    <div class="week-day">水</div>
+    <div class="week-day">木</div>
+    <div class="week-day">金</div>
+    <div class="week-day text-primary">土</div>
+    <div class="week-day text-danger">日</div>
+    <div class=""></div>
+  </div>
+<% @calendar_weeks.each do |week_days| %>
+  <div class="week-row">
+    <% week_days.each do |date| %>
+      <div class="date"><%= date.month %>/<%= date.day %></div>
+    <% end %>
+    <!-- 操作列 -->
+    <div class="actions">
+      <%= link_to "削除", admin_weeks_path, method: :delete, class: "btn btn-sm btn-danger" %>
+    </div>
+  </div>
+<% end %>
