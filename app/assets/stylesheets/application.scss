@@ -20,14 +20,14 @@
 
 .calendar-grid.header {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr)) 72px; /* 7列（横並び） */
   font-weight: bold;
   text-align: center;
   /*スクロール用で追加*/
   position: sticky;
   top: 0;
   z-index: 10;
-  background: #fff; /* ヘッダー背景を指定（必要に応じて調整） */
+  background: #ffffff; /* ヘッダー背景を指定（必要に応じて調整） */
+  border-bottom: 2px solid #696969;
 }
 
 .calendar-grid.body {
@@ -35,16 +35,22 @@
 
 .week-row {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr)) 72px; /* 7日を横並び */
   background-color: #00bfff; /* 週の背景色 */
-  border-top: 2px solid #696969;
+  border-bottom: 2px solid #696969;
 }
 
 .week-row-2 {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr)) 72px; /* 7日を横並び */
   
-  border-top: 2px solid #696969;
+  border-bottom: 2px solid #696969;
+}
+
+.public-calendar {
+  grid-template-columns: repeat(7, minmax(0, 1fr)); /* 7日を横並び */
+}
+
+.admin-calendar {
+  grid-template-columns: repeat(7, minmax(0, 1fr)) 72px; /* 7日を横並び+ボタン用セル */
 }
 
 
