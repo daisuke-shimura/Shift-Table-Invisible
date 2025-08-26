@@ -120,7 +120,7 @@
         <div class="week-row admin-calendar">
           <%= link_to admin_week_jobs_path(week_id: week.id), class:"week-link" do %>
             <% [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday].each do |day| %>
-              <div class="date" data-month="<%= week.send(day).month %>" data-date="<%= week.send(day) %>">
+              <div class="date <%= holiday_class(week.send(day)) %>" data-month="<%= week.send(day).month %>" data-date="<%= week.send(day) %>">
                 <%= week.send(day).month %>/<%= week.send(day).day %>
               </div>
             <% end %>
@@ -132,7 +132,7 @@
         <% else %>
         <div class="week-row-2 admin-calendar">
               <% (0..6).each do |day| %>
-                <div class="date <%= (date + day).month.odd? ? 'odd-month' : 'even-month' %> <%= 'today' if (date + day) == @today %>" data-month="<%= (date + day).month %>" data-date="<%= (date + day) %>">
+                <div class="date <%= holiday_class(date + day) %> <%= (date + day).month.odd? ? 'odd-month' : 'even-month' %> <%= 'today' if (date + day) == @today %>" data-month="<%= (date + day).month %>" data-date="<%= (date + day) %>">
                   <%= (date + day).month %>/<%= (date + day).day %>
                 </div>
               <% end %>
