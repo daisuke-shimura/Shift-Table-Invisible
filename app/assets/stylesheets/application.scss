@@ -1,141 +1,205 @@
 @import "bootstrap";
 
-/*カレンダー*/
+/*カレンダー（既存クラスを使って見た目を強化）*/
 .calendar-grid {
-  /*background-color: #ddd;  グリッド全体の背景色 */
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #1f2937;
+  line-height: 1;
 }
 
 .calendar-grid.box {
-  border: 2px solid #000000;
-  /* 表示領域を固定して内部をスクロールさせる */
+  border: 1px solid rgba(0,0,0,0.08);
   width: 100%;
-  max-width: 1080px; /* 必要なら調整 */
-  margin: 0 auto;
-  max-height: 80vh;          /* または height: 600px; 等 */
+  max-width: 1080px;
+  margin: 18px auto;
+  max-height: 78vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
+  background: linear-gradient(180deg,#ffffff,#fbfbff);
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 8px 24px rgba(16,24,40,0.06);
 }
 
-
+/* ヘッダーを目立たせる（sticky のまま） */
 .calendar-grid.header {
   display: grid;
-  font-weight: bold;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+  font-weight: 700;
   text-align: center;
-  /*スクロール用で追加*/
   position: sticky;
   top: 0;
-  z-index: 10;
-  background: #ffffff; /* ヘッダー背景を指定（必要に応じて調整） */
-  border-bottom: 2px solid #696969;
+  z-index: 20;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(4px);
+  padding: 8px 6px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  border-radius: 6px;
 }
 
+/* 本体グリッド */
 .calendar-grid.body {
+  display: block;
+  margin-top: 8px;
+}
+
+/* 週行の見た目（hover を無効化、角丸をなくす） */
+.week-row, .week-row-2 {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;                 /* 表っぽくするため隙間は 0 */
+  align-items: stretch;
+  padding: 0;
+  margin-bottom: 6px;
+  transition: none;       /* hover アニメ無効 */
+  background: transparent;
+  border-radius: 0;       /* 角丸を削除 */
 }
 
 .week-row {
-  display: grid;
-  background-color: #00bfff; /* 週の背景色 */
-  border-bottom: 2px solid #696969;
+  background-color: #3d8bff;
 }
 
-.week-row-2 {
-  display: grid;
-  
-  border-bottom: 2px solid #696969;
+/* hover 効果を完全に無効に（タッチ向け） */
+.week-row:hover, .week-row-2:hover {
+  transform: none;
+  box-shadow: none;
 }
 
-.public-calendar {
-  grid-template-columns: repeat(7, minmax(0, 1fr)); /* 7日を横並び */
-}
+/* public/admin は grid-template を上書きしているのでそのまま活用 */
+.public-calendar { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.admin-calendar  { grid-template-columns: repeat(7, minmax(0, 1fr)) 72px; }
 
-.admin-calendar {
-  grid-template-columns: repeat(7, minmax(0, 1fr)) 72px; /* 7日を横並び+ボタン用セル */
-}
+/* week-link の見た目はそのまま、子 .date に影響を与える */
+.week-link { display: contents; color: inherit; }
 
-
-.week-link {
-  /*display: block;      リンクを1行全体にする 
-  margin-bottom: 2px;   週ごとに余白 
-  text-decoration: none;*/
- 
-  display: contents;
-  color: inherit;
-}
-
-.week-link:hover .date {
-  /*background-color: #eef6ff;*/
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
-.week-link:active {
-  background-color: #f0f8ff; /* タップ時の反応 */
-}
-
-
+/* 日セル：角丸・影をなくして線だけの表風に */
 .date {
-  /*background-color: #fff;  各日付セルの背景色 */
-  text-align: left;
-  height: 100px; /* セルの高さ */
-  vertical-align: top; /* 上部に揃える */
-  padding: 10px;
-  /* border: 1px solid #ddd; セルの境界線 */
-  border-right: 1px solid #696969;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  text-align: center;
+  height: 72px;           /* 表風に高さを揃える（必要なら調整） */
+  padding: 8px;
   box-sizing: border-box;
-  position: relative;
+  position: relative; /* 必要 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: none;
+  overflow: hidden;
+  color: inherit;
+  box-shadow: none;
+  padding-top: 28px;  /* 左上ラベル分の余白を確保 */
 }
 
-/* 奇数月は白にする */
-.date.odd-month {
-  background-color: #fff;
-}
-
-/* 必要なら偶数用クラス（デフォルトと同じ） */
-.date.even-month {
-  background-color: #ddd;
-}
-
-/* 各セルの間にだけ縦線を表示（重複しない） */
-.date + .date {
-}
-
-/* 今日の日付 */
-.date.today {
-  background-color: #ffeb3b; /* 黄色 */
+/* 明示的なラベルがある場合（推奨） */
+.date > .date-label {
+  position: absolute;
+  left: 8px;
+  top: 8px;
   font-weight: 700;
-  border: 2px solid #fbc02d;
+  font-size: 1rem;
+  line-height: 1;
+  z-index: 2;
+  display: inline-block;
 }
 
-.date:last-child {
-  
+/* ラベル要素が無い場合のフォールバック：最初の子要素を左上に寄せる */
+.date > *:first-child:not(.month-chip) {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  font-weight: 700;
+  z-index: 2;
 }
 
-.note-head { 
-  text-align: left; 
-  font-weight: 600;
+/* 月表示等の補助要素は右下に移動（存在するなら競合回避） */
+.date .month-chip,
+.date .extra {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  font-size: 0.75rem;
+  color: rgba(31,41,55,0.45);
+  z-index: 1;
 }
 
-.note { 
-  text-align: left; 
-  color: #555; 
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
+/* 月での背景色は廃止して線だけにする */
+.date.odd-month,
+.date.even-month {
+  background: transparent;
 }
 
-
-/* 土曜日 */
-.date:nth-child(6) {
-  color: blue;
+/* 日付表示（既存構造を壊さないため疑似要素で小さく月表示） */
+.date::before {
+  /*content: attr(data-month) "月";
+  position: absolute;
+  right: 8px;
+  top: 8px;*/
+  font-size: 0.72rem;
+  color: rgba(31,41,55,0.45);
+  background: rgba(0,0,0,0.03);
+  padding: 2px 6px;
+  border-radius: 999px;
+  display: inline-block;
 }
 
-/* 日曜日 */
-.date:nth-child(7) {
-  color: red;
+/* 大きめの数字は cell 内テキストの先頭にくる想定 */
+.date > * { z-index: 1; }
+
+/* 表っぽい罫線を各セルに適用（ヘッダーと同じ仕上がりに） */
+.week-row .date,
+.week-row-2 .date,
+.calendar-grid.header > .week-day {
+  border-left: 1px solid rgba(0,0,0,0.06);
+  border-top: 1px solid rgba(0,0,0,0.03);
+  background: #fff; /* セルの中は白で統一 */
 }
 
-.week-day {
-  border-right: 1px solid #696969;
-  padding-top: 2px;
-  padding-bottom: 2px;
+/* 左端だけ線を消す */
+.week-row .date:first-child,
+.week-row-2 .date:first-child,
+.calendar-grid.header > .week-day:first-child {
+  border-left: none;
+}
+
+/* today は控えめに色付け（影は消す）*/
+.date.today {
+  background: #fffbe6;
+  border-color: rgba(245,158,11,0.14);
+  box-shadow: none;
+}
+
+/* 土日の色付け（既存の nth-child 指定はやめて、weekday クラスが無ければ疑似調整） */
+.date.weekend-sat { color: #2563eb; }
+.date.weekend-sun { color: #ef4444; }
+
+/* 末列の線などの微調整（不要ならそのまま） */
+.date + .date {}
+
+/* 小さな注釈領域（既存 note などを活かす） */
+.note-head { text-align: left; font-weight: 600; color: #111827; }
+.note { text-align: left; color: #6b7280; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* 曜日セルの調整（高さを合わせる） */
+.calendar-grid.header > .week-day {
+  padding: 8px 6px;
+  background: #fafafa;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+/* レスポンシブ */
+@media (max-width: 900px) {
+  .date { height: 64px; padding: 6px; }
+  .calendar-grid.header { padding: 6px 4px; }
+}
+
+@media (max-width: 600px) {
+  .calendar-grid.box { padding: 8px; max-height: 70vh; }
+  .date { height: 64px; padding: 6px; border-radius: 0; }
+  .week-row, .week-row-2 { gap: 0; padding: 6px 4px; }
 }

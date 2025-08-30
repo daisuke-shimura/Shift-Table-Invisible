@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getRightmostDateCell() {
     const rect = container.getBoundingClientRect();
-    const headerBottom = rect.top + header.offsetHeight + 50;
+    const headerBottom = rect.top + header.offsetHeight + 46;
     const cells = Array.from(container.querySelectorAll('.date'));
     let candidate = null;
     let maxRight = -Infinity;
