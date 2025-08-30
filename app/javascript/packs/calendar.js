@@ -1,50 +1,83 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('calendar-container');
-  if (!container) return;
-  const header = container.querySelector('.calendar-grid.header');
+  const header = container && container.querySelector('.calendar-grid.header');
   const titleEl = document.getElementById('calendar-title');
-  if (!header || !titleEl) return;
+  if (!container || !header || !titleEl) return;
 
   let ticking = false;
+  let prevMonth = null;
 
-  function findDateCellAt(x, y) {
-    const el = document.elementFromPoint(x, y);
-    return el ? (el.closest ? el.closest('.date') : findAncestor(el, 'date')) : null;
+  function getRightmostDateCell() {
+    const rect = container.getBoundingClientRect();
+    const headerBottom = rect.top + header.offsetHeight + 50;
+    const cells = Array.from(container.querySelectorAll('.date'));
+    let candidate = null;
+    let maxRight = -Infinity;
+
+    for (const cell of cells) {
+      const r = cell.getBoundingClientRect();
+      // ヘッダー直下にかかるセルのみ対象（可視かつトップ行）
+      if (r.top <= headerBottom && r.bottom >= headerBottom) {
+        // 横方向にコンテナ内で見えているものを優先
+        if (r.right > maxRight && r.right > rect.left && r.left < rect.right) {
+          candidate = cell;
+          maxRight = r.right;
+        }
+      }
+    }
+    return candidate;
   }
 
-  function updateTitle() {
-    const rect = container.getBoundingClientRect();
-    const y = rect.top + header.offsetHeight + 2; // ヘッダー直下の y
-    // まずは右端近くをチェックし、見つからなければ左へスキャンして最初の .date を使う
-    let dateCell = null;
-    for (let offset = 10; offset <= rect.width; offset += 10) {
-      const x = rect.left + rect.width - offset;
-      dateCell = findDateCellAt(x, y);
-      if (dateCell && dateCell.dataset && dateCell.dataset.month) break;
+  function ensureLabel(cell) {
+    let label = cell.querySelector('.date-label');
+    if (!label) {
+      label = document.createElement('span');
+      label.className = 'date-label';
+      // 既存の中身をラベルに移す（単純化：既存は日付テキストのみ前提）
+      label.textContent = (cell.dataset && cell.dataset.date) ? cell.dataset.date.split('-').pop().replace(/^0/,'') : '';
+      // 子を全部消して label を追加（必要なら既存構造を保持する実装に変更）
+      while (cell.firstChild) cell.removeChild(cell.firstChild);
+      cell.appendChild(label);
     }
+    return label;
+  }
 
-    if (dateCell && dateCell.dataset && dateCell.dataset.month) {
-      titleEl.textContent = dateCell.dataset.month + '月';
-    }
-    ticking = false;
+  function syncCellsWithMonth(currentMonth) {
+    const cells = container.querySelectorAll('.date');
+    cells.forEach(cell => {
+      const cellMonth = Number(cell.dataset && cell.dataset.month);
+      if (!cell.dataset || !cell.dataset.date) return;
+      const day = (cell.dataset.date.split('-')[2] || new Date(cell.dataset.date).getDate());
+      const label = ensureLabel(cell);
+      const newText = (cellMonth === currentMonth) ? String(Number(day)) : `${cellMonth}/${String(Number(day))}`;
+      if (label.textContent !== newText) label.textContent = newText;
+    });
+  }
+
+  function updateTitleAndCellsIfNeeded() {
+    const dateCell = getRightmostDateCell();
+    if (!dateCell || !dateCell.dataset) return;
+    const currentMonth = Number(dateCell.dataset.month);
+    if (Number.isNaN(currentMonth)) return;
+    if (currentMonth === prevMonth) return; // 変化なければ何もしない（負荷軽減）
+    prevMonth = currentMonth;
+    titleEl.textContent = `${currentMonth}月`;
+    syncCellsWithMonth(currentMonth);
   }
 
   function onScroll() {
     if (!ticking) {
       ticking = true;
-      requestAnimationFrame(updateTitle);
+      requestAnimationFrame(() => {
+        updateTitleAndCellsIfNeeded();
+        ticking = false;
+      });
     }
   }
 
   container.addEventListener('scroll', onScroll, { passive: true });
-  // 初回セット
-  updateTitle();
+  window.addEventListener('resize', () => requestAnimationFrame(updateTitleAndCellsIfNeeded));
 
-  function findAncestor(node, className) {
-    while (node && node !== document) {
-      if (node.classList && node.classList.contains(className)) return node;
-      node = node.parentNode;
-    }
-    return null;
-  }
+  // 初期表示同期
+  updateTitleAndCellsIfNeeded();
 });
