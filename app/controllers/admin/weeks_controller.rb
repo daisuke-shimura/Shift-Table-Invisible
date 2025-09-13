@@ -14,7 +14,7 @@ class Admin::WeeksController < ApplicationController
 
 
     #カレンダー
-    @today = Date.today + 7
+    @today = Date.today
     #@start_date = @today.beginning_of_month
     @start_date = earliest_date.beginning_of_month
     @end_date = latest_date.end_of_month

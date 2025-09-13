@@ -1,9 +1,7 @@
 module ApplicationHelper
   def holiday_class(date)
-    if Holidays.on(date, :jp).any?
-      return 'text-danger'
-    else
-      return nil
-    end
+    return 'text-primary' if date.saturday?
+    return 'text-danger' if date.sunday? || Holidays.on(date, :jp).any?
+    nil
   end
 end

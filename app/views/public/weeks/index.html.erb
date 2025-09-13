@@ -26,7 +26,14 @@
           <%= link_to admin_week_jobs_path(week_id: week.id), class:"week-link" do %>
             <% [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday].each do |day| %>
               <% d = week.send(day).to_date %>
-              <div class="date <%= holiday_class(d) %> <%= 'weekend-sat' if d.saturday? %> <%= 'weekend-sun' if d.sunday? %>" data-month="<%= d.month %>" data-date="<%= d %>">
+              <div class=
+                "date 
+                <%= holiday_class(d) %>
+                <%= d.month.odd? ? 'odd-month' : 'even-month' %> 
+                <%= 'today' if d == @today %>"
+                data-month="<%= d.month %>"
+                data-date="<%= d %>"
+              >
                 <span class="date-label"><%= d.day %></span>
               </div>
             <% end %>
@@ -36,7 +43,14 @@
         <div class="week-row-2 public-calendar">
           <% (0..6).each do |day| %>
             <% d = (date + day).to_date %>
-            <div class="date <%= holiday_class(d) %> <%= d.month.odd? ? 'odd-month' : 'even-month' %> <%= 'today' if d == @today %> <%= 'weekend-sat' if d.saturday? %> <%= 'weekend-sun' if d.sunday? %>" data-month="<%= d.month %>" data-date="<%= d %>">
+            <div class=
+              "date 
+              <%= holiday_class(d) %> 
+              <%= d.month.odd? ? 'odd-month' : 'even-month' %> 
+              <%= 'today' if d == @today %> "
+              data-month="<%= d.month %>" 
+              data-date="<%= d %>"
+            >
               <% if d.month == @start_date.month %>
                 <%= d.day %>
               <% else %>
