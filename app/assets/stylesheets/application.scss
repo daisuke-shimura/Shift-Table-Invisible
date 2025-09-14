@@ -56,13 +56,26 @@
   margin-bottom: 6px;
   transition: none;       /* hover アニメ無効 */
   background: transparent;
-  border-radius: 0;       /* 角丸を削除 */
 }
 
 .week-row {
   // background-color: rgba(61, 139, 255, 0.3);
   border: 2px solid #ff69b4; /* 鮮やかなピンクの太い実線 */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative; /* overlay 用の基準にする */
+  overflow: visible;
+}
+
+.week-row::after {
+  content: "";
+  position: absolute;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; と同じ */
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,105,180,0.12), rgba(255,105,180,0.08));
+  mix-blend-mode: multiply; /* 色の馴染みを良くする */
+  transition: opacity 160ms ease;
+  opacity: 1;
+  z-index: 2;
 }
 
 /* hover 効果を完全に無効に（タッチ向け） */
