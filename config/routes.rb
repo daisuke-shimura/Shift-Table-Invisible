@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :weeks do
       resources :jobs, only: [:index]
+      member do
+        patch :visible
+      end
     end
   end
 

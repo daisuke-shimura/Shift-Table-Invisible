@@ -6,3 +6,62 @@
     <%= (week.monday).month %>月<%= (week.monday).day %>日～<%= (week.sunday).month %>月<%= (week.sunday).day %>日<br>
   <% end %>
 <% end %>
+
+<h3><span id="calendar-title"><%= @start_date.strftime('%-m月') %></span></h3>
+<div id="calendar-container" class="calendar-grid box theme-dark">
+  <div class="calendar-grid header public-calendar">
+    <div class="week-day">月</div>
+    <div class="week-day">火</div>
+    <div class="week-day">水</div>
+    <div class="week-day">木</div>
+    <div class="week-day">金</div>
+    <div class="week-day text-primary">土</div>
+    <div class="week-day text-danger">日</div>
+  </div>
+  <!-- カレンダー本体 -->
+  <div class="calendar-grid body">
+    <% @calendar_rows.each do |date, week| %>
+        <% if week %>
+        <div class="week-row public-calendar">
+          <%= link_to admin_week_jobs_path(week_id: week.id), class:"week-link" do %>
+            <% [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday].each do |day| %>
+              <% d = week.send(day).to_date %>
+              <div class=
+                "date 
+                <%= holiday_class(d) %>
+                <%= d.month.odd? ? 'odd-month' : 'even-month' %> 
+                <%= 'today' if d == @today %>"
+                data-month="<%= d.month %>"
+                data-date="<%= d %>"
+              >
+                <span class="date-label"><%= d.day %></span>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+        <% else %>
+        <div class="week-row-2 public-calendar">
+          <% (0..6).each do |day| %>
+            <% d = (date + day).to_date %>
+            <div class=
+              "date 
+              <%= holiday_class(d) %> 
+              <%= d.month.odd? ? 'odd-month' : 'even-month' %> 
+              <%= 'today' if d == @today %> "
+              data-month="<%= d.month %>" 
+              data-date="<%= d %>"
+            >
+              <% if d.month == @start_date.month %>
+                <%= d.day %>
+              <% else %>
+                <%= "#{d.month}/#{d.day}" %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <% end %>
+    <% end %>
+  </div>
+</div>
+
+<%= javascript_pack_tag "calendar" %>

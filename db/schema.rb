@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_08_08_150841) do
+ActiveRecord::Schema.define(version: 2025_09_27_063235) do
 
   create_table "admins", force: :cascade do |t|
     t.string "name", default: "", null: false
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2025_08_08_150841) do
     t.boolean "is_created", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "is_visible", default: true, null: false
   end
 
 end

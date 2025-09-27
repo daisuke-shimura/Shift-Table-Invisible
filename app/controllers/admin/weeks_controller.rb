@@ -5,8 +5,8 @@ class Admin::WeeksController < ApplicationController
     @weeks_all = Week.all
     # @weeks = Week.order(monday: :asc)
     @weeks = Week.order(monday: :asc).where("monday > ?", after_tommorow)
-    earliest = @weeks.first   # monday が最小の Week オブジェクト
-    latest   = @weeks.last    # monday が最大の Week オブジェクト
+    # earliest = @weeks.first   # monday が最小の Week オブジェクト
+    # latest   = @weeks.last    # monday が最大の Week オブジェクト
     earliest_date = @weeks.minimum(:monday)  # Date または nil
     latest_date   = @weeks.maximum(:monday) # Date または nil
     #@week_mondays = @weeks.map { |w| w.monday.to_date }        # 判定用の配列
@@ -14,7 +14,7 @@ class Admin::WeeksController < ApplicationController
 
 
     #カレンダー
-    @today = Date.today + 30
+    @today = Date.today
     #@start_date = @today.beginning_of_month
     @start_date = earliest_date.beginning_of_month
     @end_date = latest_date.end_of_month
@@ -31,14 +31,7 @@ class Admin::WeeksController < ApplicationController
       monday = @start_day + i * 7
       (0..6).map { |d| (monday + d).to_date }  # 各週の月〜日を Date 配列で返す
     end
-    # end_date = today.end_of_month
-    # # 月曜始まりに揃える
-    # start_date -= (start_date.wday - 1) % 7
 
-    # # 日曜終わりに揃える
-    # end_date += (7 - end_date.wday) % 7
-
-    # @days = (start_date..end_date).to_a
     @calendar_rows = @days.map { |date| [date, @week_mondays[date]] }
   end
 
@@ -59,6 +52,13 @@ class Admin::WeeksController < ApplicationController
     else
       redirect_to admin_weeks_path, alert: 'Failed to delete week.'
     end
+  end
+
+  def visible
+    week = Week.find(params[:id])
+    week.is_visible = !week.is_visible
+    week.save
+    redirect_to request.referer
   end
 
   private

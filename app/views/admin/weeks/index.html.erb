@@ -40,7 +40,7 @@
 <h3>カレンダー（データ）</h3>
 <!-- 曜日ヘッダー -->
 <div class="calendar-grid box">
-  <div class="calendar-grid header">
+  <div class="calendar-grid header admin-calendar">
     <div class="week-day">月</div>
     <div class="week-day">火</div>
     <div class="week-day">水</div>
@@ -53,7 +53,7 @@
   <!-- カレンダー本体 -->
   <div class="calendar-grid body">
     <% @weeks.each do |week| %>
-      <div class="week-row">
+      <div class="week-row admin-calendar">
           <%= link_to admin_week_jobs_path(week_id: week.id), class:"week-link" do %>
             
               <% [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday].each do |day| %>
@@ -100,9 +100,11 @@
 <br>
 <%= @end_day %>
   
-<h3>カレンダー（全体）8月<%= @today %></h3>
-<div class="calendar-grid box">
-  <div class="calendar-grid header">
+
+<%= @today %>
+<h3>カレンダー（全体）<span id="calendar-title"><%= @start_date.strftime('%-m月') %></span></h3>
+<div id="calendar-container" class="calendar-grid box">
+  <div class="calendar-grid header admin-calendar">
     <div class="week-day">月</div>
     <div class="week-day">火</div>
     <div class="week-day">水</div>
@@ -115,10 +117,12 @@
   <div class="calendar-grid body">
     <% @calendar_rows.each do |date, week| %>
         <% if week %>
-        <div class="week-row">
+        <div class="week-row admin-calendar">
           <%= link_to admin_week_jobs_path(week_id: week.id), class:"week-link" do %>
             <% [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday].each do |day| %>
-              <div class="date"><%= week.send(day).month %>/<%= week.send(day).day %></div>
+              <div class="date <%= holiday_class(week.send(day)) %>" data-month="<%= week.send(day).month %>" data-date="<%= week.send(day) %>">
+                <%= week.send(day).month %>/<%= week.send(day).day %>
+              </div>
             <% end %>
           <% end %>
           <%= link_to admin_week_path(week.id), method: :delete, class:"btn btn-danger btn-sm" do %>
@@ -126,9 +130,9 @@
           <% end %>
         </div>
         <% else %>
-        <div class="week-row-2">
+        <div class="week-row-2 admin-calendar">
               <% (0..6).each do |day| %>
-                <div class="date <%= (date + day).month.odd? ? 'odd-month' : 'even-month' %> <%= 'today' if (date + day) == @today %>">
+                <div class="date <%= holiday_class(date + day) %> <%= (date + day).month.odd? ? 'odd-month' : 'even-month' %> <%= 'today' if (date + day) == @today %>" data-month="<%= (date + day).month %>" data-date="<%= (date + day) %>">
                   <%= (date + day).month %>/<%= (date + day).day %>
                 </div>
               <% end %>
@@ -139,9 +143,11 @@
   </div>
 </div>
 
+<%= javascript_pack_tag "calendar" %>
+
 
 <h3>わんちゃん楽？</h3>
-  <div class="calendar-grid header">
+  <div class="calendar-grid header admin-calendar">
     <div class="week-day">月</div>
     <div class="week-day">火</div>
     <div class="week-day">水</div>
@@ -152,7 +158,7 @@
     <div class=""></div>
   </div>
 <% @calendar_weeks.each do |week_days| %>
-  <div class="week-row">
+  <div class="week-row admin-calendar">
     <% week_days.each do |date| %>
       <div class="date"><%= date.month %>/<%= date.day %></div>
     <% end %>
