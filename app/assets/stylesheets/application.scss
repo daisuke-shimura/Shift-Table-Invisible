@@ -71,18 +71,29 @@
   position: absolute;
   inset: 0; /* top:0; right:0; bottom:0; left:0; と同じ */
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(255,105,180,0.12), rgba(255,105,180,0.08));
+  background: linear-gradient(180deg, rgba(175, 132, 154, 0.12), rgba(255,105,180,0.08));
   mix-blend-mode: multiply; /* 色の馴染みを良くする */
   transition: opacity 160ms ease;
   opacity: 1;
   z-index: 2;
 }
 
-/* hover 効果を完全に無効に（タッチ向け） */
-.week-row:hover, .week-row-2:hraover {
-  transform: none;
+/*無効用*/
+.week-row.muted::after {
+  /* ピンクのオーバーレイを灰色に置き換え（無効表示） */
+  background: linear-gradient(180deg, rgba(128,128,128,0.12), rgba(128,128,128,0.06));
+  mix-blend-mode: normal;
+  transition: opacity 160ms ease;
+  opacity: 1;
+  z-index: 2;
+  filter: grayscale(70%) brightness(0.95);
+}
+/* 必要なら枠色も控えめにする */
+.week-row.muted {
+  border-color: rgba(0,0,0,0.08);
   box-shadow: none;
 }
+
 
 /* public/admin は grid-template を上書きしているのでそのまま活用 */
 .public-calendar { grid-template-columns: repeat(7, minmax(0, 1fr)); }

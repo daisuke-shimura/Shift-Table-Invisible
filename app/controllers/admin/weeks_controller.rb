@@ -54,6 +54,13 @@ class Admin::WeeksController < ApplicationController
     end
   end
 
+  def visible
+    week = Week.find(params[:id])
+    week.is_visible = !week.is_visible
+    week.save
+    redirect_to request.referer
+  end
+
   private
   def week_params
     params.require(:week).permit(:monday)

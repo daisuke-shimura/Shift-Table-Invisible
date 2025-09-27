@@ -1,7 +1,17 @@
 <%= link_to "戻る", admin_weeks_path %>
 
 <h1>admin Index</h1>
-<h3><%= (@week.monday).day %>日～<%= (@week.sunday).day %>日のシフト希望</h3>
+<div class="d-flex justify-content-between align-items-center">
+  <h3><%= (@week.monday).day %>日～<%= (@week.sunday).day %>日のシフト希望</h3>
+  <%= form_with url: visible_admin_week_path(@week.id), method: :patch, local: true do %>
+    <div class="form-check form-switch">
+      <%= check_box_tag "visible", true, @week.is_visible, class: "form-check-input", onchange: "this.form.submit();" %>
+      <label class="form-check-label">表示切替</label>
+    </div>
+  <% end %>
+</div>
+
+<%= @week.is_visible %>
 
 <table class="table table-bordered table-hover">
   <thead>
