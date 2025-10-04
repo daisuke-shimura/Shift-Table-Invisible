@@ -2,6 +2,7 @@ class Public::WeeksController < ApplicationController
   def index
     load_weeks
     load_calendar
+    @user = current_user 
   end
 
 

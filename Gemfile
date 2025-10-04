@@ -59,3 +59,4 @@ gem 'devise'
 gem "bootstrap", "~> 5.3.0"
 gem "sassc-rails"
 gem 'holidays'
+gem "enum_help"

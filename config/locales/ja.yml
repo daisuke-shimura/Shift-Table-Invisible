@@ -1,0 +1,9 @@
+ja:
+  enums:
+    user:
+      status:
+        general: アルバイト
+        beginner: 研修中
+        rest: 休職中
+        retire: 退職
+        manager: 社員

@@ -1,5 +1,13 @@
 <h1>Public::Weeks#index</h1>
 
+<h3><%= @user.name %>さんがログイン中</h3>
+
+<div class="d-flex align-items-center mb-3">
+  <p>ステータス：<%= @user.status_i18n %></p>
+  <%= link_to "マイページ", user_path(@user.id), class: "btn btn-sm btn-primary ms-3" %>
+</div>
+
+
 <h3>日程一覧</h3>
 <% @weeks.each do |week| %>
   <%= link_to week_jobs_path(week_id: week.id) do %>
