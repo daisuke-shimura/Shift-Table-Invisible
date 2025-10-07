@@ -11,7 +11,6 @@
   <% end %>
 </div>
 
-<%= @week.is_visible %>
 
 <table class="table table-bordered table-hover">
   <thead>
@@ -44,6 +43,7 @@
   </thead>
 
   <tbody>
+  <% if @week.is_visible %>
     <% @users.each do |user| %>
     <tr class="">
       <td><%= user.id %></td>
@@ -59,4 +59,20 @@
       <td></td>
     </tr>
     <% end %>
+  <% else %>
+    <tr>
+      <td><%= current_user.id %></td>
+      <td><%= current_user.name %></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  <% end %>
   </tbody>
+</table>

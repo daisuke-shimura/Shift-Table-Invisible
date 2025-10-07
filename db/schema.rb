@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 2025_09_27_063235) do
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.integer "status", default: 0, null: false
+    t.integer "rails ", default: 0, null: false
     t.string "time1", default: ""
     t.string "time2", default: ""
     t.string "time3", default: ""
