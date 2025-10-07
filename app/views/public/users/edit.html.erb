@@ -1,0 +1,40 @@
+<h1>マイページ編集</h1>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h4 class="mb-0"><i class="bi bi-pencil-square me-2"></i>プロフィール編集</h4>
+          <%= link_to "戻る", user_path(@user.id), class: "btn btn-light btn-sm" %>
+        </div>
+
+        <div class="card-body bg-light">
+          <%= form_with model: @user do |f| %>
+            <div class="mb-3">
+              <%= f.label :name, "名前", class: "form-label fw-bold" %>
+              <%= f.text_field :name, class: "form-control", placeholder: "姓 名" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :email, "メールアドレス", class: "form-label fw-bold" %>
+              <%= f.email_field :email, class: "form-control" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :status, "ステータス", class: "form-label fw-bold" %>
+              <%= f.select :status, User.statuses_i18n.invert, {}, class: "form-select" %>
+            </div>
+
+            <hr>
+
+            <div class="text-end">
+              <%= f.submit "更新する", class: "btn btn-primary px-4" %>
+              <%= link_to "キャンセル", @user, class: "btn btn-outline-secondary ms-2" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
